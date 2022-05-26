@@ -5,6 +5,11 @@ const Bodyparser=require("body-parser")
 let app=Express()
 app.use(Bodyparser.urlencoded({extended:true}))
 app.use(Bodyparser.json())
+app.use((req, res, next) => { 
+    res.setHeader("Access-Control-Allow-Origin", "*");  
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"   ); 
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS"   ); 
+    next(); });
 
 var eventModel=Mongoose.model("events",
 new Mongoose.Schema(
@@ -40,7 +45,16 @@ eventdata.save((error,data)=>{
 })
 
 app.get("/api/viewevent/",(req,res)=>{
-res.send("Hello")
+eventModel.find((error,data)=>{
+if(error)
+{
+    res.send(error)
+}
+else
+{
+res.send(data)
+}
+})
 })
 app.listen("7000",()=>{
     console.log("server running")
