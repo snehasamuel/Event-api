@@ -44,6 +44,35 @@ eventdata.save((error,data)=>{
 })
 })
 
+
+app.post("/api/search",(req,res)=>{
+var getDate=req.body
+eventModel.find(getDate,(error,data)=>{
+    if(error)
+    {
+        res.send({"status":"error","data":error})
+    }
+    else
+    {
+        res.send({"status":"success","data":data})
+    }
+})
+})
+
+app.post("/api/delete",(req,res)=>{
+var getID=req.body
+eventModel.findByIdAndRemove(getID,(error,data)=>{
+    if(error)
+    {
+        res.send({"status":"error","data":error})
+    }
+    else
+    {
+        res.send({"status":"success","data":data})
+    }
+})
+})
+
 app.get("/api/viewevent/",(req,res)=>{
 eventModel.find((error,data)=>{
 if(error)
